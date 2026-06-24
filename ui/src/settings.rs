@@ -1,6 +1,6 @@
 //! Settings UI for VoxelNaut using egui
 
-use crate::core::config::{Settings, GraphicsSettings, AudioSettings, ControlsSettings};
+use core::config::{Settings, GraphicsSettings, AudioSettings, ControlsSettings};
 use serde::{Serialize, Deserialize};
 
 /// Settings UI state

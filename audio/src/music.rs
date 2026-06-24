@@ -4,12 +4,11 @@
 //!
 //! ## IMPORTANT
 //!
-//! Minecraft music is **copyright Mojang Studios / Microsoft**.
-//! This is a placeholder music system. Use ORIGINAL music created by you
-//! or licensed under appropriate Creative Commons licenses.
+//! Music player for VoxelNaut
+//!
+//! Handles background music playback with crossfading and track management.
 
 use super::manager::{MusicId, SoundCategory};
-use rodio::Sink;
 use std::sync::{Arc, Mutex};
 
 /// Music track metadata
@@ -122,7 +121,7 @@ impl MusicDatabase {
     fn register_all_tracks(&mut self) {
         // === MENU MUSIC ===
         self.tracks.push(TrackInfo {
-            id: MusicId::MENU,
+            id: MusicId::TITLE,
             name: "Menu Theme".to_string(),
             file_path: None, // Would be original file
             is_procedural: true,
@@ -166,7 +165,7 @@ impl MusicDatabase {
 
         // === SWAMP ===
         self.tracks.push(TrackInfo {
-            id: MusicId::SWamp,
+            id: MusicId::SWAMP,
             name: "Swamp".to_string(),
             file_path: None,
             is_procedural: true,

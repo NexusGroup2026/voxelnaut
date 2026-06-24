@@ -1,7 +1,7 @@
 //! Biome system for VoxelNaut
 
-use crate::core::world::Biome;
-use crate::core::block::BlockId;
+use core::world::Biome;
+use core::block::BlockId;
 
 /// Biome definitions with colors and characteristics
 #[derive(Debug, Clone)]

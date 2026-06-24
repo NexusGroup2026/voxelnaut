@@ -3,7 +3,7 @@
 //! Handles loading, unloading, and caching of chunks.
 //! Supports INFINITE subterranean world with lazy loading.
 
-use crate::core::math::{ChunkPos, BlockPos, Vec3, CHUNK_SIZE, CHUNK_BITS};
+use core::math::{ChunkPos, BlockPos, Vec3, CHUNK_SIZE, CHUNK_BITS};
 use parking_lot::{RwLock, MappedRwLockReadGuard};
 use slotmap::{SlotMap, DefaultKey};
 use std::collections::HashMap;

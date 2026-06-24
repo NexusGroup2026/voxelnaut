@@ -2,7 +2,7 @@
 //!
 //! Player and entity movement, jumping, and sprinting.
 
-use crate::core::math::{Vec3, AABB};
+use core::math::{Vec3, AABB};
 use crate::collision::CollisionResolver;
 
 /// Movement input state

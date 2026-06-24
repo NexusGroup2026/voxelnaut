@@ -2,7 +2,7 @@
 //!
 //! A* pathfinding algorithm for mob navigation.
 
-use crate::core::math::{BlockPos, Vec3};
+use core::math::{BlockPos, Vec3};
 use std::collections::{BinaryHeap, HashMap, HashSet};
 
 /// A* node for pathfinding

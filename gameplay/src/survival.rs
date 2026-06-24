@@ -3,7 +3,7 @@
 //! Health, hunger, stamina, and damage systems.
 
 use serde::{Serialize, Deserialize};
-use crate::core::events::DamageSource;
+use core::events::DamageSource;
 
 /// Player survival state
 #[derive(Debug, Clone, Serialize, Deserialize)]

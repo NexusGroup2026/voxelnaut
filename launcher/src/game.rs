@@ -2,9 +2,9 @@
 //!
 //! This module contains the main Game struct which coordinates all systems.
 
-use crate::core::config::Settings;
-use crate::core::math::{Vec3, BlockPos, Rotation, ChunkPos, CHUNK_BITS};
-use crate::core::entity::EntityId;
+use core::config::Settings;
+use core::math::{Vec3, BlockPos, Rotation, ChunkPos, CHUNK_BITS};
+use core::entity::EntityId;
 use crate::world::{WorldGenerator, ChunkManager, GeneratorConfig};
 use crate::world::generator::CHUNK_SIZE;
 use crate::render::{Renderer, Camera};

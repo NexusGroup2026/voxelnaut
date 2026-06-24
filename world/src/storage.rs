@@ -7,9 +7,9 @@ use std::io::{Read, Write, BufReader, BufWriter};
 use std::path::PathBuf;
 use std::sync::Arc;
 use parking_lot::RwLock;
-use crate::core::world::WorldId;
-use crate::core::math::{ChunkPos, CHUNK_SIZE};
-use crate::core::block::BlockId;
+use world::WorldId;
+use core::math::{ChunkPos, CHUNK_SIZE};
+use core::block::BlockId;
 use crate::chunk::{Chunk, ChunkState};
 use crate::generator::WorldGenerator;
 
@@ -128,7 +128,7 @@ impl WorldStorage {
         let chunk = Chunk {
             position: pos,
             blocks,
-            biome: crate::core::world::Biome::Plains,
+            biome: core::world::Biome::Plains,
             state: ChunkState::Generated,
             dirty: false,
             last_access: 0.0,
@@ -160,7 +160,7 @@ impl WorldStorage {
         let mut writer = BufWriter::new(file);
         
         writeln!(writer, "name = \"{}\"", self.world_id.0)?;
-        writeln!(writer, "version = 1)?;
+        writeln!(writer, "version = 1")?;
         writeln!(writer, "generator.seed = {}", generator.config.seed.0)?;
         writeln!(writer, "generator.sea_level = {}", generator.config.sea_level)?;
         

@@ -1,0 +1,14 @@
+C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\deps\serde-fe8c36d499ee95ba.d: C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\build\serde-033a8eae4d5b79cd\out/private.rs
+
+C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\deps\libserde-fe8c36d499ee95ba.rlib: C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\build\serde-033a8eae4d5b79cd\out/private.rs
+
+C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\deps\libserde-fe8c36d499ee95ba.rmeta: C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\build\serde-033a8eae4d5b79cd\out/private.rs
+
+C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs:
+C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs:
+C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs:
+C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs:
+C:\Users\moises\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs:
+C:\Users\moises\voxelnaut\target\x86_64-pc-windows-msvc\release\build\serde-033a8eae4d5b79cd\out/private.rs:
+
+# env-dep:OUT_DIR=C:\\Users\\moises\\voxelnaut\\target\\x86_64-pc-windows-msvc\\release\\build\\serde-033a8eae4d5b79cd\\out

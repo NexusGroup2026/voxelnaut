@@ -2,8 +2,8 @@
 //!
 //! AABB-based collision detection with the world.
 
-use crate::core::math::{Vec3, BlockPos, AABB, CHUNK_SIZE};
-use crate::core::block::BlockId;
+use core::math::{Vec3, BlockPos, AABB, CHUNK_SIZE};
+use core::block::BlockId;
 use std::collections::HashMap;
 
 /// Collision resolver for checking collisions with world blocks

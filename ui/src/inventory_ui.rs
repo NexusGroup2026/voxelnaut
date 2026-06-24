@@ -1,7 +1,7 @@
 //! Inventory UI for VoxelNaut using egui
 
 use crate::gameplay::Inventory;
-use crate::core::item::{ItemStack, ItemId};
+use core::item::{ItemStack, ItemId};
 use serde::{Serialize, Deserialize};
 
 /// Inventory UI state

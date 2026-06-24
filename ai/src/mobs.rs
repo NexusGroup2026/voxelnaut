@@ -2,8 +2,8 @@
 //!
 //! Mob type definitions and spawning.
 
-use crate::core::entity::{Mob, MobType};
-use crate::core::math::{Vec3, BlockPos};
+use core::entity::{Mob, MobType};
+use core::math::{Vec3, BlockPos};
 
 /// Mob definition
 #[derive(Debug, Clone)]
@@ -15,7 +15,7 @@ pub struct MobDefinition {
     pub speed: f32,
     pub follow_range: f32,
     pub attack_cooldown: f32,
-    pub spawn_biomes: Vec<crate::core::world::Biome>,
+    pub spawn_biomes: Vec<core::world::Biome>,
     pub spawn_light_min: i32,
     pub spawn_light_max: i32,
     pub can_swim: bool,

@@ -6,8 +6,8 @@ use wgpu;
 use wgpu::util::DeviceExt;
 use std::sync::Arc;
 use parking_lot::RwLock;
-use crate::core::config::GraphicsSettings;
-use crate::core::math::Vec3;
+use core::config::GraphicsSettings;
+use core::math::Vec3;
 use super::{Camera, Mesh, Vertex};
 
 /// Render pipeline

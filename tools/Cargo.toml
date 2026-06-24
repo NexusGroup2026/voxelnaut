@@ -1,0 +1,11 @@
+[package]
+name = "tools"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+core = { path = "../core" }
+world = { path = "../world" }
+
+[features]
+default = []

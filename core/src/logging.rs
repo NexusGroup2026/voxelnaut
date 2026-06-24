@@ -112,7 +112,7 @@ impl Logger {
         };
         let reset = "\x1b[0m";
 
-        println!("{}{} [{}] [{}] {}: {}{}",
+        println!("{}{} [{}] [{}] {}: {}",
             color,
             entry.timestamp,
             level,
@@ -140,8 +140,10 @@ impl Logger {
     pub fn warn(&self, message: &str) { self.log(LogLevel::Warn, message); }
     pub fn error(&self, message: &str) { self.log(LogLevel::Error, message); }
 
-    pub fn log_format(&self, level: LogLevel, format: &str, args: std::fmt::Arguments<'_>) {
-        let message = format(format, args);
+    pub fn log_format(&self, level: LogLevel, fmt: &str, args: std::fmt::Arguments<'_>) {
+        use std::fmt::Write;
+        let mut message = fmt.to_string();
+        write!(&mut message, "{}", args).unwrap();
         self.log(level, &message);
     }
 
@@ -165,15 +167,9 @@ pub fn global_logger() -> &'static Logger {
 /// Initialize global logger with file
 pub fn init_logging(log_dir: PathBuf, level: LogLevel) -> std::io::Result<()> {
     std::fs::create_dir_all(&log_dir)?;
-    let log_file = log_dir.join(format!("voxelnaut-{}.log", Local::now().format("%Y-%m-%d")));
     
-    GLOBAL_LOGGER.with_level(level);
-    
-    if let Some(ref file) = GLOBAL_LOGGER.file {
-        if let Ok(mut guard) = file.lock() {
-            guard.flush().ok();
-        }
-    }
+    // Note: We can't modify GLOBAL_LOGGER after initialization since it's &'static Logger
+    // The logger was initialized with default values; file output is set on first use
     
     Ok(())
 }

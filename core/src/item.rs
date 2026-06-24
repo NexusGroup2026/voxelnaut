@@ -330,7 +330,6 @@ impl ItemRegistry {
             tool_type: None,
         });
 
-        log::info!("Item registry: Registered {} items", self.items.len());
     }
 }
 
@@ -338,4 +337,70 @@ impl Default for ItemRegistry {
     fn default() -> Self {
         Self::new()
     }
+}
+
+/// Item ID type alias
+pub type ItemId = u16;
+
+/// Item stack for inventory
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ItemStack {
+    pub id: ItemId,
+    pub count: u8,
+    pub durability: Option<u16>,
+}
+
+impl ItemStack {
+    pub fn new(id: ItemId, count: u8) -> Self {
+        Self {
+            id,
+            count,
+            durability: None,
+        }
+    }
+
+    pub fn with_durability(mut self, durability: u16) -> Self {
+        self.durability = Some(durability);
+        self
+    }
+
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.count == 0
+    }
+
+    #[inline]
+    pub fn max_count(&self) -> u8 {
+        64
+    }
+
+    /// Add items to stack, returns leftover
+    pub fn add(&mut self, count: u8) -> u8 {
+        let max = self.max_count();
+        let total = self.count as u16 + count as u16;
+        let leftover = if total > max as u16 { total - max as u16 } else { 0 } as u8;
+        self.count = (total.min(max as u16)) as u8;
+        leftover
+    }
+
+    /// Remove items from stack, returns amount removed
+    pub fn remove(&mut self, count: u8) -> u8 {
+        let removed = count.min(self.count);
+        self.count -= removed;
+        removed
+    }
+}
+
+/// Global item registry instance
+pub static ITEM_REGISTRY: std::sync::LazyLock<ItemRegistry> = 
+    std::sync::LazyLock::new(ItemRegistry::new);
+
+/// Get item definition by ID (panics if not found)
+pub fn get_item_unchecked(id: ItemId) -> &'static ItemDef {
+    ITEM_REGISTRY.get(id).expect("Invalid item ID")
+}
+
+/// Get item definition by ID (returns None if not found)
+pub fn get_item(id: ItemId) -> Option<&'static ItemDef> {
+    ITEM_REGISTRY.get(id)
 }

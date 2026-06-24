@@ -6,7 +6,7 @@ use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
 use std::sync::Arc;
 use parking_lot::RwLock;
-use crate::core::entity::EntityId;
+use core::entity::EntityId;
 
 /// Peer connection state
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

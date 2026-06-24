@@ -46,11 +46,6 @@ impl Vec3 {
     }
 
     #[inline]
-    pub fn to_vec3d(&self) -> vecmath::Vector3<f32> {
-        [self.x, self.y, self.z]
-    }
-
-    #[inline]
     pub fn length(&self) -> f32 {
         (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
     }
@@ -234,6 +229,14 @@ impl Div<f32> for Vec3 {
     }
 }
 
+impl Vec3 {
+    /// Component-wise multiplication
+    #[inline]
+    pub fn mul_components(&self, other: &Self) -> Self {
+        Self::new(self.x * other.x, self.y * other.y, self.z * other.z)
+    }
+}
+
 impl Neg for Vec3 {
     type Output = Self;
     fn neg(self) -> Self {
@@ -346,6 +349,11 @@ impl BlockPos {
             y: self.y.abs(),
             z: self.z.abs(),
         }
+    }
+
+    #[inline]
+    pub fn chunk_pos(&self) -> ChunkPos {
+        ChunkPos::from_block(self)
     }
 }
 
@@ -557,8 +565,8 @@ impl AABB {
             if direction.z != 0.0 { 1.0 / direction.z } else { f32::INFINITY },
         );
 
-        let t0 = (self.min - origin) * inv_dir;
-        let t1 = (self.max - origin) * inv_dir;
+        let t0 = (self.min - origin).mul_components(&inv_dir);
+        let t1 = (self.max - origin).mul_components(&inv_dir);
 
         let tmin = t0.min(&t1);
         let tmax = t0.max(&t1);

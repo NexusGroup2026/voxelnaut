@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 core = { path = "../core" }
+serde = { version = "1.0", features = ["derive"] }
 
 [features]
 default = []

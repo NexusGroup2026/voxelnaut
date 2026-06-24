@@ -11,7 +11,7 @@
 
 use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
-use crate::core::world::DimensionId;
+use core::world::DimensionId;
 
 /// Dimension definition
 #[derive(Debug, Clone)]
@@ -42,7 +42,7 @@ pub struct Dimension {
     /// Height scale for terrain (affects mountains, caves)
     pub height_scale: f32,
     /// Biome types available in this dimension
-    pub biomes: Vec<crate::core::world::BiomeType>,
+    pub biomes: Vec<core::world::BiomeType>,
 }
 
 impl Dimension {
@@ -66,12 +66,12 @@ impl Dimension {
                 spawn_y: 80,
                 height_scale: 1.0,
                 biomes: vec![
-                    crate::core::world::BiomeType::Plains,
-                    crate::core::world::BiomeType::Desert,
-                    crate::core::world::BiomeType::Mountains,
-                    crate::core::world::BiomeType::Forest,
-                    crate::core::world::BiomeType::Taiga,
-                    crate::core::world::BiomeType::SnowyTundra,
+                    core::world::BiomeType::Plains,
+                    core::world::BiomeType::Desert,
+                    core::world::BiomeType::Mountains,
+                    core::world::BiomeType::Forest,
+                    core::world::BiomeType::Taiga,
+                    core::world::BiomeType::SnowyTundra,
                 ],
             },
             
@@ -92,9 +92,9 @@ impl Dimension {
                 spawn_y: 64,
                 height_scale: 0.5, // Less extreme terrain
                 biomes: vec![
-                    crate::core::world::BiomeType::LunarPlains,
-                    crate::core::world::BiomeType::LunarCrater,
-                    crate::core::world::BiomeType::LunarHighland,
+                    core::world::BiomeType::LunarPlains,
+                    core::world::BiomeType::LunarCrater,
+                    core::world::BiomeType::LunarHighland,
                 ],
             },
             
@@ -115,9 +115,9 @@ impl Dimension {
                 spawn_y: 64,
                 height_scale: 1.5, // Tall volcanoes
                 biomes: vec![
-                    crate::core::world::BiomeType::MartianPlains,
-                    crate::core::world::BiomeType::MartianCanyon,
-                    crate::core::world::BiomeType::Volcanic,
+                    core::world::BiomeType::MartianPlains,
+                    core::world::BiomeType::MartianCanyon,
+                    core::world::BiomeType::Volcanic,
                 ],
             },
             
@@ -138,9 +138,9 @@ impl Dimension {
                 spawn_y: 64,
                 height_scale: 0.7,
                 biomes: vec![
-                    crate::core::world::BiomeType::VenusianLowlands,
-                    crate::core::world::BiomeType::VenusianHighlands,
-                    crate::core::world::BiomeType::SulphurSea,
+                    core::world::BiomeType::VenusianLowlands,
+                    core::world::BiomeType::VenusianHighlands,
+                    core::world::BiomeType::SulphurSea,
                 ],
             },
             
@@ -160,7 +160,7 @@ impl Dimension {
                 seed_offset: 4000,
                 spawn_y: 64,
                 height_scale: 0.8,
-                biomes: vec![crate::core::world::BiomeType::MercurianPlain],
+                biomes: vec![core::world::BiomeType::MercurianPlain],
             },
             
             // Jupiter - gas giant, no solid ground
@@ -179,7 +179,7 @@ impl Dimension {
                 seed_offset: 5000,
                 spawn_y: 128, // Floating in atmosphere
                 height_scale: 3.0,
-                biomes: vec![crate::core::world::BiomeType::JovianStorm],
+                biomes: vec![core::world::BiomeType::JovianStorm],
             },
             
             // Saturn - gas giant with rings
@@ -198,7 +198,7 @@ impl Dimension {
                 seed_offset: 6000,
                 spawn_y: 128,
                 height_scale: 2.5,
-                biomes: vec![crate::core::world::BiomeType::SaturnRing, crate::core::world::BiomeType::SaturnCloud],
+                biomes: vec![core::world::BiomeType::SaturnRing, core::world::BiomeType::SaturnCloud],
             },
             
             // Neptune - ice giant with super storms
@@ -217,7 +217,7 @@ impl Dimension {
                 seed_offset: 7000,
                 spawn_y: 128,
                 height_scale: 2.0,
-                biomes: vec![crate::core::world::BiomeType::NeptunianCore],
+                biomes: vec![core::world::BiomeType::NeptunianCore],
             },
             
             // Pluto - icy dwarf planet
@@ -236,7 +236,7 @@ impl Dimension {
                 seed_offset: 8000,
                 spawn_y: 64,
                 height_scale: 0.3,
-                biomes: vec![crate::core::world::BiomeType::PlutonianIcePlain],
+                biomes: vec![core::world::BiomeType::PlutonianIcePlain],
             },
             
             // Asteroid Belt
@@ -255,7 +255,7 @@ impl Dimension {
                 seed_offset: 9000,
                 spawn_y: 64,
                 height_scale: 0.1,
-                biomes: vec![crate::core::world::BiomeType::Asteroid],
+                biomes: vec![core::world::BiomeType::Asteroid],
             },
             
             // The Void - mysterious dimension
@@ -274,7 +274,7 @@ impl Dimension {
                 seed_offset: 10000,
                 spawn_y: 64,
                 height_scale: 0.0,
-                biomes: vec![crate::core::world::BiomeType::Void],
+                biomes: vec![core::world::BiomeType::Void],
             },
             
             // Crystal Realm - magical dimension
@@ -293,7 +293,7 @@ impl Dimension {
                 seed_offset: 11000,
                 spawn_y: 64,
                 height_scale: 1.2,
-                biomes: vec![crate::core::world::BiomeType::CrystalForest],
+                biomes: vec![core::world::BiomeType::CrystalForest],
             },
             
             // Ember Dimension - fire realm
@@ -312,7 +312,7 @@ impl Dimension {
                 seed_offset: 12000,
                 spawn_y: 64,
                 height_scale: 1.0,
-                biomes: vec![crate::core::world::BiomeType::EmberPlains],
+                biomes: vec![core::world::BiomeType::EmberPlains],
             },
             
             // Frost Realm - ice dimension
@@ -331,7 +331,7 @@ impl Dimension {
                 seed_offset: 13000,
                 spawn_y: 64,
                 height_scale: 1.1,
-                biomes: vec![crate::core::world::BiomeType::FrostWastes],
+                biomes: vec![core::world::BiomeType::FrostWastes],
             },
         ]
     }

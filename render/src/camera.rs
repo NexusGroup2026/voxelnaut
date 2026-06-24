@@ -2,11 +2,11 @@
 //!
 //! First-person camera with mouse look and movement.
 
-use crate::core::math::{Vec3, Rotation, AABB};
+use core::math::{Vec3, Rotation, AABB};
 use serde::{Serialize, Deserialize};
 
 /// Camera mode
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CameraMode {
     FirstPerson,
     ThirdPerson,
@@ -14,7 +14,7 @@ pub enum CameraMode {
 }
 
 /// Camera projection type
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Projection {
     Perspective,
     Orthographic,

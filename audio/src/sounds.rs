@@ -14,6 +14,7 @@
 //! - Free sound libraries: freesound.org, opengameart.org
 
 use super::manager::{SfxId, SoundCategory};
+use std::sync::Arc;
 use std::collections::HashMap;
 use parking_lot::RwLock;
 

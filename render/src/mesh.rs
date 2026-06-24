@@ -2,13 +2,13 @@
 //!
 //! Greedy meshing and chunk mesh generation.
 
-use crate::core::math::{Vec3, BlockPos, Direction, CHUNK_SIZE};
-use crate::core::block::{BlockId, BLOCK_AIR, get_block};
+use core::math::{Vec3, BlockPos, Direction, CHUNK_SIZE};
+use core::block::{BlockId, BLOCK_AIR, get_block};
 use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
 
 /// Vertex data for rendering
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Vertex {
     pub position: [f32; 3],
     pub normal: [f32; 3],
@@ -200,7 +200,7 @@ where
 }
 
 /// Generate mesh for a single chunk
-pub fn generate_chunk_mesh(chunk_blocks: &[BlockId], chunk_pos: crate::core::math::ChunkPos) -> Mesh {
+pub fn generate_chunk_mesh(chunk_blocks: &[BlockId], chunk_pos: core::math::ChunkPos) -> Mesh {
     let mut mesh = Mesh::new();
     let base_x = (chunk_pos.x << 5) as f32;
     let base_z = (chunk_pos.z << 5) as f32;

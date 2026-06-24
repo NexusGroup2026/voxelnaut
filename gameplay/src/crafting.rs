@@ -3,7 +3,7 @@
 //! Recipe definitions and crafting logic.
 
 use serde::{Serialize, Deserialize};
-use crate::core::item::ItemId;
+use core::item::ItemId;
 use crate::inventory::Inventory;
 
 /// Crafting recipe ingredient

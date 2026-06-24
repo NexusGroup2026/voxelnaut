@@ -1,5 +1,6 @@
 //! World types shared across modules
 
+use serde::{Serialize, Deserialize};
 use crate::math::{BlockPos, ChunkPos};
 use crate::block::BlockId;
 
@@ -53,7 +54,7 @@ pub enum Biome {
 }
 
 impl Biome {
-    pub fn all() -> [Biome; 39] {
+    pub fn all() -> [Biome; 35] {
         [
             // Overworld
             Biome::Plains,
@@ -111,7 +112,7 @@ impl Biome {
     }
 
     pub fn temperature(&self) -> f32 {
-        match self {
+        match *self {
             Biome::Desert => 2.0,
             Biome::Savanna => 1.5,
             Biome::Plains => 1.0,
@@ -126,11 +127,27 @@ impl Biome {
             Biome::Ocean => 0.3,
             Biome::DeepOcean => 0.2,
             Biome::Badlands => 1.8,
+            // Celestial bodies - extreme temperatures
+            Biome::LunarPlains | Biome::LunarCrater | Biome::LunarHighland => -0.8,
+            Biome::MartianPlains | Biome::MartianCanyon => -0.3,
+            Biome::Volcanic | Biome::SulphurSea => 2.5,
+            Biome::VenusianLowlands | Biome::VenusianHighlands => 1.8,
+            Biome::MercurianPlain => 2.0,
+            Biome::JovianStorm => 0.5,
+            Biome::SaturnRing | Biome::SaturnCloud => -0.4,
+            Biome::NeptunianCore => 0.2,
+            Biome::PlutonianIcePlain => -1.0,
+            Biome::Asteroid => -0.9,
+            Biome::Void => 0.0,
+            Biome::CrystalForest => 0.6,
+            Biome::EmberPlains => 1.5,
+            Biome::FrostWastes => -1.2,
+            Biome::Mushroom => 0.6,
         }
     }
 
     pub fn humidity(&self) -> f32 {
-        match self {
+        match *self {
             Biome::Swamp => 1.0,
             Biome::Jungle => 0.9,
             Biome::Ocean => 0.8,
@@ -145,6 +162,22 @@ impl Biome {
             Biome::Mountains => 0.3,
             Biome::SnowyTundra => 0.3,
             Biome::Badlands => 0.1,
+            // Celestial bodies - typically very dry
+            Biome::LunarPlains | Biome::LunarCrater | Biome::LunarHighland => 0.0,
+            Biome::MartianPlains | Biome::MartianCanyon => 0.0,
+            Biome::Volcanic | Biome::SulphurSea => 0.0,
+            Biome::VenusianLowlands | Biome::VenusianHighlands => 0.1,
+            Biome::MercurianPlain => 0.0,
+            Biome::JovianStorm => 0.3,
+            Biome::SaturnRing | Biome::SaturnCloud => 0.1,
+            Biome::NeptunianCore => 0.2,
+            Biome::PlutonianIcePlain => 0.0,
+            Biome::Asteroid => 0.0,
+            Biome::Void => 0.0,
+            Biome::CrystalForest => 0.2,
+            Biome::EmberPlains => 0.0,
+            Biome::FrostWastes => 0.1,
+            Biome::Mushroom => 0.7,
         }
     }
 }
@@ -190,7 +223,7 @@ impl DimensionId {
     pub const FROST_REALM: DimensionId = DimensionId(13);
 
     pub fn name(&self) -> &'static str {
-        match self {
+        match *self {
             DimensionId::OVERWORLD => "Overworld",
             DimensionId::MOON => "The Moon",
             DimensionId::MARS => "Mars",
@@ -210,7 +243,7 @@ impl DimensionId {
     }
 
     pub fn description(&self) -> &'static str {
-        match self {
+        match *self {
             DimensionId::OVERWORLD => "The familiar world you call home",
             DimensionId::MOON => "A barren satellite with low gravity and craters",
             DimensionId::MARS => "The red planet with giant volcanoes and dust storms",
@@ -230,7 +263,7 @@ impl DimensionId {
     }
 
     pub fn required_crystal_item_id(&self) -> Option<u16> {
-        match self {
+        match *self {
             DimensionId::MOON => Some(220),
             DimensionId::MARS => Some(221),
             DimensionId::VENUS => Some(222),
@@ -249,7 +282,7 @@ impl DimensionId {
     }
 
     pub fn gravity(&self) -> f32 {
-        match self {
+        match *self {
             DimensionId::OVERWORLD => 1.0,
             DimensionId::MOON => 0.16,
             DimensionId::MARS => 0.38,
@@ -269,7 +302,7 @@ impl DimensionId {
     }
 
     pub fn sky_color(&self) -> [f32; 4] {
-        match self {
+        match *self {
             DimensionId::OVERWORLD => [0.5, 0.7, 1.0, 1.0],
             DimensionId::MOON => [0.05, 0.05, 0.1, 1.0],
             DimensionId::MARS => [0.9, 0.5, 0.3, 1.0],
@@ -289,7 +322,7 @@ impl DimensionId {
     }
 
     pub fn spawn_y(&self) -> i32 {
-        match self {
+        match *self {
             DimensionId::JUPITER | DimensionId::SATURN | DimensionId::NEPTUNE => 128,
             _ => 64,
         }

@@ -2,8 +2,8 @@
 //!
 //! Client-side validation to prevent common exploits.
 
-use crate::core::math::{Vec3, BlockPos, CHUNK_SIZE};
-use crate::core::entity::EntityId;
+use core::math::{Vec3, BlockPos, CHUNK_SIZE};
+use core::entity::EntityId;
 
 /// Anti-cheat violation type
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -179,12 +179,12 @@ impl AntiCheat {
 
         // Check block position is reasonable (not inside player)
         let block_center = block_pos.to_vec3_centered();
-        let player_aabb = crate::core::math::AABB::from_center_size(
+        let player_aabb = core::math::AABB::from_center_size(
             player_pos,
             Vec3::new(0.6, 1.8, 0.6),
         );
         
-        let block_aabb = crate::core::math::AABB::new(
+        let block_aabb = core::math::AABB::new(
             block_vec,
             block_vec + Vec3::ONE,
         );

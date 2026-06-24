@@ -15,8 +15,8 @@
 //! - Deep underground: y=-64 to 0
 //! - Bedrock: y=-64 (bottom)
 
-use crate::core::math::{ChunkPos, BlockPos, CHUNK_SIZE, Vec3};
-use crate::core::world::BiomeType;
+use core::math::{ChunkPos, BlockPos, CHUNK_SIZE, Vec3};
+use core::world::BiomeType;
 use noise::{Perlin, Seedable, Worley, Fbm, MultiFractal, HybridMultiFractal};
 use std::collections::HashMap;
 

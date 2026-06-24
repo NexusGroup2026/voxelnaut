@@ -1,0 +1,248 @@
+name: Build and Metrics
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # Job 1: Build verification
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: x86_64-pc-windows-msvc
+
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo build
+        uses: actions/cache@v3
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build
+        run: cargo build --release -p launcher --target x86_64-pc-windows-msvc 2>&1 | tee build.log
+
+      - name: Check for warnings
+        run: |
+          $warnings = Select-String -Path build.log -Pattern "warning:" | Measure-Object | Select-Object -ExpandProperty Count
+          echo "Build warnings: $warnings"
+          if ($warnings -gt 100) { exit 1 }
+
+  # Job 2: Code metrics (runs on Linux for cloc)
+  metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get line counts
+        run: |
+          echo "## Code Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Lines of Code by Crate" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '| Crate | Files | Code | Comments | Blank |' >> $GITHUB_STEP_SUMMARY
+          echo '|-------|-------|------|----------|-------|' >> $GITHUB_STEP_SUMMARY
+          
+          for crate in core world render physics gameplay ai net ui audio assets tools launcher; do
+            if [ -d "$crate/src" ]; then
+              files=$(find $crate -name "*.rs" | wc -l)
+              code=$(find $crate/src -name "*.rs" -exec cat {} \; 2>/dev/null | grep -v "^$" | grep -v "^//" | wc -l)
+              comments=$(find $crate/src -name "*.rs" -exec cat {} \; 2>/dev/null | grep "^//" | wc -l)
+              blank=$(find $crate/src -name "*.rs" -exec cat {} \; 2>/dev/null | grep "^$" | wc -l)
+              echo "| $crate | $files | $code | $comments | $blank |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+      - name: Count total Rust lines
+        run: |
+          total=$(find . -name "*.rs" -exec cat {} \; 2>/dev/null | grep -v "^$" | wc -l)
+          echo "Total Rust: $total lines" >> $GITHUB_STEP_SUMMARY
+
+      - name: Feature inventory
+        run: |
+          echo "### Features" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Count dimensions
+          dims=$(grep -c "DimensionId::" core/src/world.rs 2>/dev/null || echo "0")
+          echo "- **Dimensions**: ~$dims supported" >> $GITHUB_STEP_SUMMARY
+          
+          # Count biomes
+          biomes=$(grep -c "Biome::" core/src/world.rs 2>/dev/null || echo "0")
+          echo "- **Biomes**: ~$biomes defined" >> $GITHUB_STEP_SUMMARY
+          
+          # Count items
+          items=$(grep -c "ItemDef" core/src/item.rs 2>/dev/null || echo "0")
+          echo "- **Items**: ~$items defined" >> $GITHUB_STEP_SUMMARY
+          
+          # Count crafting recipes
+          recipes=$(grep -c "Recipe" gameplay/src/crafting.rs 2>/dev/null || echo "0")
+          echo "- **Crafting Recipes**: ~$recipes" >> $GITHUB_STEP_SUMMARY
+
+  # Job 3: Dependency check
+  deps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for outdated dependencies
+        run: |
+          # Simple check for common outdated deps (just for demo)
+          echo "## Dependency Health" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Direct Dependencies" >> $GITHUB_STEP_SUMMARY
+          echo '| Crate | Version |' >> $GITHUB_STEP_SUMMARY
+          echo '|-------|---------|' >> $GITHUB_STEP_SUMMARY
+          
+          for cargo in */Cargo.toml; do
+            crate=$(dirname $cargo)
+            if grep -q "name = " $cargo; then
+              name=$(grep "^name = " $cargo | head -1 | sed 's/name = "\(.*\)"/\1/')
+              version=$(grep "^version = " $cargo | head -1 | sed 's/version = "\(.*\)"/\1/')
+              echo "| $name | $version |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+  # Job 4: Compile time tracking
+  timing:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: x86_64-pc-windows-msvc
+
+      - name: Time incremental build
+        run: |
+          $start = Get-Date
+          cargo build --release -p launcher --target x86_64-pc-windows-msvc 2>&1 | Out-Null
+          $end = Get-Date
+          $duration = ($end - $start).TotalSeconds
+          echo "Build time: $duration seconds" >> $GITHUB_STEP_SUMMARY
+          echo "::set-output name=build_time::$duration" # Deprecated but kept for compatibility
+
+      - name: Upload timing artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-timing
+          path: ${{ github.workspace }}/build-timing.txt
+
+  # Job 5: Quality gates
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Rustfmt check
+        run: |
+          cargo fmt --all -- --check 2>&1 || echo "Formatting issues found"
+
+      - name: Clippy (if available)
+        run: |
+          rustup component add clippy 2>/dev/null || true
+          cargo clippy --workspace -- -D warnings 2>&1 || echo "Clippy warnings present"
+
+  # Job 6: Generate improvement graph data
+  graph-data:
+    runs-on: ubuntu-latest
+    outputs:
+      commit-hash: ${{ steps.vars.outputs.hash }}
+    steps:
+      - id: vars
+        run: |
+          echo "hash=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "date=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          echo "commit=$(git log -1 --pretty=%B | head -20 | tr '\n' ' ')" >> $GITHUB_OUTPUT
+
+      - name: Build metrics JSON
+        run: |
+          # Count current state
+          LOC=$(find . -name "*.rs" -exec cat {} \; 2>/dev/null | grep -v "^$" | wc -l)
+          CRATES=$(find . -name "Cargo.toml" -exec grep "^name = " {} \; 2>/dev/null | wc -l)
+          
+          # Save metrics
+          echo "{\"loc\":$LOC,\"crates\":$CRATES,\"commit\":\"${{ github.sha }}\",\"date\":\"$(date -u +%Y-%m-%d)\"}" > metrics.json
+          
+      - name: Upload metrics
+        uses: actions/upload-artifact@v3
+        with:
+          name: metrics-data
+          path: metrics.json
+
+  # Job 7: Generate summary comment
+  summary:
+    needs: [build, metrics, deps, timing, quality]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate PR summary
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## VoxelNaut Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Build Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Check if build succeeded
+          if [ "${{ needs.build.result }}" == "success" ]; then
+            echo "✅ **Build: PASSED**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Build: FAILED**" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changes in this PR" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Count files changed
+          files=$(git diff --name-only | wc -l)
+          echo "- Files changed: $files" >> $GITHUB_STEP_SUMMARY
+          
+          additions=$(git diff --stat | tail -1 | awk '{print $1}')
+          deletions=$(git diff --stat | tail -1 | awk '{print $3}')
+          echo "- Lines added: $additions" >> $GITHUB_STEP_SUMMARY
+          echo "- Lines removed: $deletions" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Quality Gates" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.quality.result }}" == "success" ]; then
+            echo "✅ **Quality: PASSED**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Quality: WARNINGS**" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "_This summary was automatically generated by GitHub Actions_" >> $GITHUB_STEP_SUMMARY

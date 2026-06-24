@@ -2,8 +2,8 @@
 //!
 //! Packet definitions and protocol handling.
 
-use crate::core::entity::EntityId;
-use crate::core::math::{Vec3, BlockPos};
+use core::entity::EntityId;
+use core::math::{Vec3, BlockPos};
 use serde::{Serialize, Deserialize};
 
 /// Protocol version

@@ -2,8 +2,8 @@
 //!
 //! Handles chunk, entity, and block synchronization between peers.
 
-use crate::core::math::{BlockPos, ChunkPos};
-use crate::core::entity::EntityId;
+use core::math::{BlockPos, ChunkPos};
+use core::entity::EntityId;
 use serde::{Serialize, Deserialize};
 
 /// Sync message types

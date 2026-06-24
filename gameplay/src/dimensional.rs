@@ -35,8 +35,8 @@
 
 use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
-use crate::core::item::ItemId;
-use crate::core::world::DimensionId;
+use core::item::ItemId;
+use core::world::DimensionId;
 use crate::inventory::Inventory;
 
 /// Portal state
@@ -50,10 +50,10 @@ pub enum PortalState {
 /// Portal definition
 #[derive(Debug, Clone)]
 pub struct Portal {
-    pub position: crate::core::math::BlockPos,
+    pub position: core::math::BlockPos,
     pub target_dimension: DimensionId,
     pub state: PortalState,
-    pub frame_blocks: Vec<crate::core::math::BlockPos>,
+    pub frame_blocks: Vec<core::math::BlockPos>,
 }
 
 /// Dimensional Rift Engine item in use
@@ -84,7 +84,7 @@ impl RiftEngineState {
         
         // Check if player has required crystal (except for overworld)
         if let Some(crystal_id) = target.required_crystal_item_id() {
-            if !inventory.contains_item(crystal_id as ItemId) {
+            if !inventory.contains(crystal_id as ItemId) {
                 return false;
             }
         }
@@ -122,7 +122,7 @@ impl Default for RiftEngineState {
 
 /// Portal manager - handles all portals in the world
 pub struct PortalManager {
-    portals: HashMap<crate::core::math::ChunkPos, Portal>,
+    portals: HashMap<core::math::ChunkPos, Portal>,
     active_portals: Vec<Portal>,
 }
 
@@ -135,7 +135,7 @@ impl PortalManager {
     }
     
     /// Check if a portal exists at position
-    pub fn get_portal(&self, chunk_pos: crate::core::math::ChunkPos) -> Option<&Portal> {
+    pub fn get_portal(&self, chunk_pos: core::math::ChunkPos) -> Option<&Portal> {
         self.portals.get(&chunk_pos)
     }
     
@@ -161,14 +161,14 @@ impl PortalManager {
         
         // Check if player has required crystal
         if let Some(crystal_id) = portal.target_dimension.required_crystal_item_id() {
-            return inventory.contains_item(crystal_id as ItemId);
+            return inventory.contains(crystal_id as ItemId);
         }
         
         true
     }
     
     /// Teleport through a portal
-    pub fn teleport(&self, portal: &Portal, player_pos: &mut crate::core::math::Vec3) -> Option<DimensionId> {
+    pub fn teleport(&self, portal: &Portal, player_pos: &mut core::math::Vec3) -> Option<DimensionId> {
         if portal.state != PortalState::Active {
             return None;
         }
@@ -266,7 +266,7 @@ impl DimensionalTravelManager {
     
     /// Cycle selected dimension for rift engine
     pub fn cycle_dimension(&mut self) {
-        use crate::core::world::DimensionId as CoreDimId;
+        use core::world::DimensionId as CoreDimId;
         let dims = [
             CoreDimId::OVERWORLD, CoreDimId::MOON, CoreDimId::MARS, CoreDimId::VENUS,
             CoreDimId::MERCURY, CoreDimId::JUPITER, CoreDimId::SATURN, CoreDimId::NEPTUNE,
@@ -296,7 +296,7 @@ impl DimensionalTravelManager {
         
         // Check required crystal
         if let Some(crystal_id) = dimension.required_crystal_item_id() {
-            return inventory.contains_item(crystal_id as ItemId);
+            return inventory.contains(crystal_id as ItemId);
         }
         
         true
@@ -304,7 +304,7 @@ impl DimensionalTravelManager {
     
     /// Get available destinations from current inventory
     pub fn get_available_destinations(&self, inventory: &Inventory) -> Vec<DimensionId> {
-        use crate::core::world::DimensionId as CoreDimId;
+        use core::world::DimensionId as CoreDimId;
         let dims = [
             CoreDimId::OVERWORLD, CoreDimId::MOON, CoreDimId::MARS, CoreDimId::VENUS,
             CoreDimId::MERCURY, CoreDimId::JUPITER, CoreDimId::SATURN, CoreDimId::NEPTUNE,
@@ -329,7 +329,7 @@ impl Default for DimensionalTravelManager {
 
 /// Handle using the Dimensional Rift Engine item
 pub fn handle_rift_engine_use(
-    player_pos: &mut crate::core::math::Vec3,
+    player_pos: &mut core::math::Vec3,
     selected_dimension: DimensionId,
     inventory: &mut Inventory,
     travel_manager: &mut DimensionalTravelManager,
@@ -360,7 +360,7 @@ pub fn is_portal_frame_block(block_id: u16) -> bool {
 
 /// Get dimension from portal frame block
 pub fn get_dimension_from_frame(block_id: u16) -> Option<DimensionId> {
-    use crate::core::world::DimensionId as CoreDimId;
+    use core::world::DimensionId as CoreDimId;
     match block_id {
         210 => Some(CoreDimId::MOON),
         211 => Some(CoreDimId::MARS),

@@ -24,7 +24,7 @@ pub enum EntityType {
 }
 
 /// Base entity struct
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Entity {
     pub id: EntityId,
     pub entity_type: EntityType,
@@ -85,7 +85,7 @@ pub struct Player {
     pub saturation: f32,
     pub stamina: f32,
     pub max_stamina: f32,
-    pub inventory: crate::gameplay::Inventory,
+    pub inventory: Vec<Option<u16>>,
     pub selected_slot: usize,
     pub xp: u32,
     pub level: u32,
@@ -103,7 +103,7 @@ impl Player {
             saturation: 5.0,
             stamina: 20.0,
             max_stamina: 20.0,
-            inventory: crate::gameplay::Inventory::new(36),
+            inventory: vec![None; 36],
             selected_slot: 0,
             xp: 0,
             level: 0,
@@ -242,14 +242,14 @@ impl Mob {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ItemEntity {
     pub entity: Entity,
-    pub item_id: crate::item::ItemId,
+    pub item_id: u16,
     pub count: u8,
     pub pickup_delay: f32,
     pub owner: Option<EntityId>,
 }
 
 impl ItemEntity {
-    pub fn new(id: EntityId, item_id: crate::item::ItemId, count: u8, position: Vec3) -> Self {
+    pub fn new(id: EntityId, item_id: u16, count: u8, position: Vec3) -> Self {
         Self {
             entity: Entity::new(id, EntityType::Item, position),
             item_id,
@@ -304,7 +304,7 @@ impl EntityManager {
         id
     }
 
-    pub fn spawn_item(&mut self, item_id: crate::item::ItemId, count: u8, position: Vec3) -> EntityId {
+    pub fn spawn_item(&mut self, item_id: u16, count: u8, position: Vec3) -> EntityId {
         let id = self.next_id;
         self.next_id += 1;
         let item = ItemEntity::new(id, item_id, count, position);

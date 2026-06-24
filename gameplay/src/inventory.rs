@@ -3,7 +3,7 @@
 //! Player inventory, item stacking, and hotbar.
 
 use serde::{Serialize, Deserialize};
-use crate::core::item::{ItemId, ItemStack, get_item_unchecked};
+use core::item::{ItemId, ItemStack, get_item_unchecked};
 
 /// Inventory slot
 #[derive(Debug, Clone, Serialize, Deserialize)]

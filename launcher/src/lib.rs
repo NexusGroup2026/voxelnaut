@@ -1,6 +1,4 @@
-//! Launcher crate for VoxelNaut
-//!
-//! Main entry point, initialization, and game loop.
+//! Launcher crate - Entry point for VoxelNaut
 
 pub mod game;
 

@@ -2,8 +2,8 @@
 //!
 //! State machines and behavior trees for mob AI.
 
-use crate::core::math::{Vec3, BlockPos};
-use crate::core::entity::{Mob, EntityId, MobType};
+use core::math::{Vec3, BlockPos};
+use core::entity::{Mob, EntityId, MobType};
 use serde::{Serialize, Deserialize};
 
 /// Mob behavior state

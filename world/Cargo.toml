@@ -1,0 +1,13 @@
+[package]
+name = "world"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+core = { path = "../core" }
+serde = { version = "1.0", features = ["derive"] }
+parking_lot = "0.12"
+noise = "0.9"
+
+[features]
+default = []

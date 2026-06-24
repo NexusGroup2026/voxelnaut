@@ -1,0 +1,15 @@
+[package]
+name = "render"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+core = { path = "../core" }
+serde = { version = "1.0", features = ["derive"] }
+parking_lot = "0.12"
+wgpu = "0.19"
+bytemuck = "1.0"
+winit = "0.30"
+
+[features]
+default = []

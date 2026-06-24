@@ -1,0 +1,13 @@
+[package]
+name = "ui"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+core = { path = "../core" }
+gameplay = { path = "../gameplay" }
+egui = "0.28"
+serde = { version = "1.0", features = ["derive"] }
+
+[features]
+default = []

@@ -5,7 +5,7 @@
 ⚠️ **Nota Importante sobre Assets e Design**
 
 Este projeto é **100% original**:
-- **Código**: Todo o código Rust é original e написано do zero
+- **Código**: Todo o código Rust é original e escrito do zero
 - **Design do Dimensional Rift Engine**: Design ORIGINAL que não é baseado em nenhuma arma ou dispositivo de nenhum jogo existente (incluindo Portal da Valve). É um dispositivo de viagem dimensional criado especificamente para este projeto.
 - **Sons**: Gerados proceduralmente ou são placeholders (sons do Minecraft são copyright Mojang/Microsoft e não são usados)
 - **Texturas**: Geradas proceduralmente via código

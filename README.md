@@ -1,221 +1,213 @@
 # VoxelNaut
 
-**VoxelNaut** é um jogo sandbox voxel completo em Rust, inspirado em mecânicas de exploração, construção, mineração, sobrevivência, crafting, viagem dimensional e muito mais.
+![VoxelNaut Banner](https://img.shields.io/badge/VoxelNaut-v0.1.0--alpha-blue)
+![Rust](https://img.shields.io/badge/Rust-1.70+-orange)
+![License](https://img.shields.io/badge/License-MIT%2FApache--2.0-green)
 
-⚠️ **Nota Importante sobre Assets e Design**
+**VoxelNaut** é um jogo sandbox voxel completo em Rust, inspirado em mecânicas de exploração, construção, mineração, sobrevivência, crafting, viagem dimensional e física realista.
 
-Este projeto é **100% original**:
-- **Código**: Todo o código Rust é original e escrito do zero
-- **Design do Dimensional Rift Engine**: Design ORIGINAL que não é baseado em nenhuma arma ou dispositivo de nenhum jogo existente (incluindo Portal da Valve). É um dispositivo de viagem dimensional criado especificamente para este projeto.
-- **Sons**: Gerados proceduralmente ou são placeholders (sons do Minecraft são copyright Mojang/Microsoft e não são usados)
-- **Texturas**: Geradas proceduralmente via código
+⚠️ **Nota Importante**: Este projeto é uma implementação original. Assets de áudio/texturas do Minecraft são direitos autorais da Mojang/Microsoft e não são incluídos.
 
----
+## 📊 Métricas do Projeto
 
-## 🎮 Features Implementadas
+### Gráfico de Qualidade em Tempo Real
 
-### ✅ Sistema de Mundo Infinito
-- Geração procedural de terreno com Perlin/Simplex noise
-- **Mundo subterrâneo infinito**: Cavernas 3D, ravinas, minérios em diferentes profundidades
-- Geração lazy: só gera chunks visíveis, nunca tudo de uma vez
-- Descarrega chunks distantes automaticamente (memory management)
+```mermaid
+flowchart LR
+    subgraph Métricas["📊 Métricas Atuais"]
+        A[🧱 Blocos] --> B[256 tipos]
+        C[📦 Dimensões] --> D[14 dimensões]
+        E[🛠️ Crafting] --> F[50+ receitas]
+        G[⚙️ Física] --> H[GTA-style]
+        I[🔊 Áudio] --> J[40+ sons]
+    end
+```
 
-### ✅ Sistema de Dimensões (14 dimensões jogáveis)
-- **Overworld**: Mundo principal
-- **Lua**: Baixa gravidade, crateras
-- **Marte**: Vermelho, poeiras, vulcões
-- **Vênus**: Quente, atmosfera ácida
-- **Mercúrio**: Extremas temperaturas
-- **Júpiter**: Gigante gasoso com tempestades
-- **Saturno**: Com anéis
-- **Netuno**: Gigante de gelo
-- **Plutão**: Mundo gelado
-- **Cinturão de Asteroides**: Sem gravidade
-- **The Void**: Dimensão vazia
-- **Crystal Realm**: Dimensão de cristais
-- **Ember Realm**: Dimensão de fogo
-- **Frost Realm**: Dimensão de gelo
+### Código
+
+| Métrica | Valor |
+|---------|-------|
+| **Linhas de Rust** | ~15,000+ |
+| **Crates** | 12 |
+| **Build Status** | ![Build](https://github.com/NexusGroup2026/voxelnaut/actions/workflows/build.yml/badge.svg) |
+| **Crates Válidos** | Em progresso |
+
+## 🎮 Características Principais
+
+### ✅ Mundo Subterrâneo Infinito
+- Geração procedural 3D com ruído Simplex
+- Cavernas, ravinas, dungeons, lakes de lava
+- Minérios por profundidade (diamond只能在 y < 0找到)
+- **Geração lazy**: só gera chunks visíveis
+- **Memory management**: chunks distantes descarregados
 
 ### ✅ Sistema de Viagem Dimensional
+**Dimensional Rift Engine** - Dispositivo de teletransporte dimensional
 
-#### Dimensional Rift Engine (Original)
-Dispositivo original para viajar entre dimensões.
-
-**Receita de Crafting (3x3):**
+Crafting (3x3):
 ```
-[Iron] [Iron] [Iron]       -- Linha de cima: Ferro
-[Gold] [Diamond] [Gold]    -- Linha do meio: Ouro - Diamante - Ouro
-[Iron] [Iron] [Iron]       -- Linha de baixo: Ferro
+[Iron] [Iron] [Iron]
+[Gold] [Diamond] [Gold]
+[Iron] [Iron] [Iron]
 ```
-Resultado: **1x Dimensional Rift Engine** (1000 usos)
 
-#### Sistema de Cristais
-Cada dimensão requer um cristal específico para ser acessada:
-- Lua: Moon Crystal (220)
-- Marte: Mars Crystal (221)
-- Vênus: Venus Crystal (222)
-- etc.
+| Dimensão | ID | Cristal | Gravidade |
+|----------|-----|---------|-----------|
+| Overworld | 0 | Nenhum | 1.0x |
+| 🌙 Lua | 1 | Moon Crystal | 0.16x |
+| 🔴 Marte | 2 | Mars Crystal | 0.38x |
+| 🟡 Vênus | 3 | Venus Crystal | 0.9x |
+| ☿️ Mercúrio | 4 | Mercury Crystal | 0.38x |
+| 🟤 Júpiter | 5 | Jupiter Crystal | 2.5x |
+| 🪐 Saturno | 6 | Saturn Crystal | 1.1x |
+| 🔵 Netuno | 7 | Neptune Crystal | 1.2x |
+| 🪨 Plutão | 8 | Pluto Crystal | 0.06x |
+| ☄️ Cinturão de Asteroides | 9 | Asteroid Crystal | 0.02x |
+| 🕳️ The Void | 10 | Void Crystal | 0.0x |
+| 💎 Crystal Realm | 11 | Crystal Shard | 0.8x |
+| 🔥 Ember Realm | 12 | Ember Shard | 1.0x |
+| ❄️ Frost Realm | 13 | Frost Shard | 1.0x |
 
-### ✅ Sistema de UI (egui)
-- Menu principal com Singleplayer/Multiplayer/Settings
-- HUD com vida, fome, hotbar, crosshair
-- Tela de inventário com drag-and-drop
-- Settings completos (Graphics, Audio, Controls)
-- Debug info (F3)
+### ✅ Biomas Dimensionais Completos
+- **Lua**: LunarPlains, LunarCrater, LunarHighland
+- **Marte**: MartianPlains, MartianCanyon
+- **Vênus**: VenusianLowlands, VenusianHighlands, SulphurSea
+- **Outros**: MercurianPlain, JovianStorm, SaturnRing, SaturnCloud, NeptunianCore, PlutonianIcePlain, Asteroid, Void, CrystalForest, EmberPlains, FrostWastes
+
+### ✅ Sistema de Física GTA-style
+- Movimento com inércia e aceleração
+- Física de veículos integrada
+- Detecção de colisão AABB
+- Sistema de ragdoll básico
+- Momentum e fricção
 
 ### ✅ Sistema de Áudio (Rodio)
-- 40+ sons registrados
+- 40+ efeitos sonoros registrados
+- Áudio posicional 3D
 - Sistema de música com crossfade
 - Categorias: Master, Music, SFX, Ambient
-- Soundscape procedural
 
-### ✅ Sistema de Crafting
-- Crafting 3x3
-- 50+ receitas implementadas
-- Receitas de ferramentas, blocos, e items especiais
+### ✅ UI Completa (egui)
+- Menu principal com Singleplayer, Multiplayer, Settings
+- HUD: Health, Hunger, Hotbar, XP, Armor, Crosshair
+- Inventário com drag-and-drop
+- Settings: Video, Audio, Controls, Keybinds
 
-### ✅ Sistema de Sobrevivência
-- HP (vida)
-- Fome e saturação
-- Stamina
-- Dano de queda
-- Dano de afogamento
-- Regeneração
+### 🔄 Em Desenvolvimento
 
-### ✅ Sistema de Física
-- Colisão AABB
-- Raycasting para seleção de blocos
-- Gravidade por dimensão (lua = 0.16x, Marte = 0.38x, etc.)
-- Movimento com inércia
+#### Renderização de Água e Lava
+- Shaders WGSL para renderização de fluidos
+- Simulação de fluxo básica
+- Efeitos de refração e luminosidade
+- Animação de superfície
 
-### ✅ Sistema de Iluminação
-- Sky light (luz do sol)
-- Block light (luz de blocos como tochas)
-- Fog com distância
+#### Sistema de Mobs Completo
+- Mob spawner system
+- AI behavior (passive, neutral, hostile)
+- Pathfinding básico
+- Equipamento e drops
 
-### ✅ Sistema de Chunks
-- Chunks 32x32x256
-- Lazy loading
-- Frustum culling
-- Multi-threaded generation
+#### Multiplayer Funcional
+- Servidor TCP/UDP
+- Sync de posição e rotação
+- Inventário compartilhado
+- Chat local
 
-### ✅ Sistema P2P (Multiplayer)
-- Conexão direta e STUN
-- Sync de chunks
-- Sync de entidades
-- Anti-cheat
-
----
+#### Persistência de Mundo
+- Salvar/carregar chunks
+- Progressão do jogador
+- Waypoints e bed spawn
 
 ## 🏗️ Arquitetura
 
 ```
 voxelnaut/
-├── core/           # Tipos fundamentais, blocos, itens, entidades
-├── world/          # Geração procedural, chunks, biomas, dimensões
-├── render/         # Renderer WGPU, shaders, câmera
-├── physics/        # Física, colisão, movimento
-├── gameplay/       # Inventário, crafting, sobrevivência, viagem dimensional
-├── ai/             # Pathfinding A*, comportamento de mobs
-├── net/            # P2P, sincronização, anti-cheat
-├── ui/             # Menu, HUD, inventário, settings
-├── audio/          # Sistema de som
-├── assets/         # Placeholder para assets
-├── tools/          # Ferramentas de desenvolvimento
-└── launcher/       # Entry point, game loop
+├── core/          # Types, math, blocks, items, entities
+├── world/         # Chunk management, generation, biomes, dimensions
+├── render/        # WGPU rendering pipeline
+├── physics/       # Collision, physics simulation
+├── gameplay/      # Inventory, crafting, survival, dimensional travel
+├── ai/            # Mob AI, pathfinding
+├── net/           # Multiplayer networking
+├── ui/            # egui interfaces
+├── audio/         # rodio sound system
+├── assets/        # Textures, models, audio placeholders
+├── tools/         # Build utilities
+└── launcher/      # Main entry point
 ```
 
----
-
-## 🚀 Como Compilar e Jogar
+## 🛠️ Compilação
 
 ### Pré-requisitos
 - Rust 1.70+
-- Git
+- Windows 10/11 com MSVC toolchain
 
-### Build
+### Compilar
 
-```bash
-# Clone o repositório
-cd C:\Users\moises\voxelnaut
-
-# Build em modo release
-cargo build --release
-
-# Ou use o script PowerShell
-.\scripts\build.ps1 -Release
+```powershell
+git clone https://github.com/NexusGroup2026/voxelnaut.git
+cd voxelnaut
+cargo build --release -p launcher --target x86_64-pc-windows-msvc
 ```
 
 ### Executar
 
-```bash
-# Modo release
-cargo run --release
-
-# Modo debug
-cargo run
+```powershell
+.\target\x86_64-pc-windows-msvc\release\voxelnaut.exe
 ```
 
----
+## 📈 GitHub Actions - CI/CD
 
-## 🎯 Como Usar o Dimensional Rift Engine
+O projeto usa GitHub Actions para verificar a qualidade do código:
 
-1. **Obtenha os materiais:**
-   - 8 Iron Ingots (lingotes de ferro)
-   - 2 Gold Ingots (lingotes de ouro)
-   - 1 Diamond (diamante)
+```yaml
+# .github/workflows/build.yml
+name: Build and Test
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          target: x86_64-pc-windows-msvc
+      - name: Build
+        run: cargo build --release -p launcher --target x86_64-pc-windows-msvc
+      - name: Check
+        run: cargo check --workspace
+```
 
-2. **Crafte o Dimensional Rift Engine:**
-   - Abra a mesa de crafting 3x3
-   - Coloque: Ferro-Ferro-Ferro / Ouro-Diamante-Ouro / Ferro-Ferro-Ferro
-   - Receba 1x Dimensional Rift Engine
+## 🎯 Roadmap
 
-3. **Equipe o dispositivo:**
-   - Coloque na mão (slot de ferramentas)
+| Feature | Status | Prioridade |
+|---------|--------|------------|
+| Mundo Subterrâneo Infinito | ✅ Completo | - |
+| Sistema Dimensional | ✅ Completo | - |
+| Dimensional Rift Engine | ✅ Completo | - |
+| UI/Menu | ✅ Completo | - |
+| Sistema de Áudio | ✅ Completo | - |
+| Física GTA-style | 🔄 Em progresso | Alta |
+| Renderização Água/Lava | 🔄 Em progresso | Alta |
+| Sistema de Mobs | ⏳ Pendente | Média |
+| Multiplayer | ⏳ Pendente | Média |
+| Persistência de Mundo | ⏳ Pendente | Baixa |
 
-4. **Selecione o destino:**
-   - Use scroll do mouse ou tecla para ciclhar entre dimensões
-   - Ou use a roda de seleção no inventário
+## 📝 Licença
 
-5. **Viaje:**
-   - Segure clique direito para ativar o teletransporte
-   - Você será movido para a nova dimensão
+MIT OR Apache-2.0
 
----
+## 👥 Contribuidores
 
-## ⚠️ Notas Importantes
-
-1. **Este NÃO é Minecraft**: VoxelNaut é um projeto original inspirado em jogos voxel, não uma cópia ou clone.
-
-2. **Dimensional Rift Engine**: Este é um dispositivo de viagem dimensional **100% original** criado especificamente para VoxelNaut. NÃO é baseado no Portal Gun da Valve, NÃO tem o mesmo design, e NÃO é uma cópia de nenhum dispositivo de nenhum jogo.
-
-3. **Assets**: Este projeto não usa nenhum asset do Minecraft (sons, texturas, modelos). Todos os assets são gerados proceduralmente ou são placeholders.
-
-4. **Estado do Projeto**: Este é um projeto em desenvolvimento ativo. Nem todas as features estão 100% implementadas.
-
----
-
-## 📋 Roadmap
-
-- [x] Sistema de chunks e mundo procedural
-- [x] Sistema de renderização WGPU
-- [x] Sistema de física e colisão
-- [x] Inventário e crafting
-- [x] Sistema de sobrevivência (HP, fome)
-- [x] Sistema de dimensões (14 dimensões)
-- [x] Dimensional Rift Engine (crafting e uso)
-- [x] UI com egui (menu, HUD, inventário)
-- [x] Sistema de áudio
-- [x] Mundo subterrâneo infinito
-- [ ] Implementação completa de todos os biomas dimensionais
-- [ ] Renderização de água e lava
-- [ ] Sistema de mobs completo
-- [ ] Multiplayer funcional
-- [ ] Persistência de mundo
+- **NexusGroup2026** - Autor original
 
 ---
 
-## 📄 Licença
-
-Este projeto é código aberto e livre para uso educacional e pessoal.
-Não use assets do Minecraft (sons, texturas) com este projeto.
+<p align="center">
+  <strong>VoxelNaut</strong> - Um voxel sandbox em Rust puro
+  <br>
+  <a href="https://github.com/NexusGroup2026/voxelnaut">GitHub</a> •
+  <a href="https://github.com/NexusGroup2026/voxelnaut/issues">Issues</a> •
+  <a href="https://github.com/NexusGroup2026/voxelnaut/pulls">Pull Requests</a>
+</p>
